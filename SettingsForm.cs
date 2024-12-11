@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace ScreenSaver
+namespace CustomScreenSaver
 {
     public partial class SettingsForm : Form
     {
@@ -25,8 +25,9 @@ namespace ScreenSaver
             // Create or get existing Registry subkey
             RegistryKey key = Registry.CurrentUser.CreateSubKey("SOFTWARE\\CustomScreenSaver");
 
-            key.SetValue("path", textBox1.Text);
-            key.SetValue("mode", listBox1.Text);
+            key.SetValue("path", textBox1.Text, RegistryValueKind.String);
+            key.SetValue("mode", listBox1.Text, RegistryValueKind.String);
+            key.SetValue("timeout", numericUpDown1.Value, RegistryValueKind.DWord);
         }
 
         private void LoadSettings()
@@ -35,13 +36,15 @@ namespace ScreenSaver
             RegistryKey key = Registry.CurrentUser.OpenSubKey("SOFTWARE\\CustomScreenSaver");
             if (key == null)
             {
-                textBox1.Text = "C# Screen Saver";
-                listBox1.Text = "Normal";
+                textBox1.Text = string.Empty;
+                listBox1.Text = Program.defaultImageMode;
+                numericUpDown1.Value = Program.defaultTimeoutMs;
             }
             else
             {
                 textBox1.Text = (string)key.GetValue("path");
                 listBox1.Text = (string)key.GetValue("mode");
+                numericUpDown1.Value = (int)key.GetValue("timeout");
             }
         }
 

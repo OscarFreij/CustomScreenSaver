@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ScreenSaver
+namespace CustomScreenSaver
 {
     public partial class ScreenSaverForm : Form
     {
@@ -58,6 +58,7 @@ namespace ScreenSaver
         {
             InitializeComponent();
             this.Bounds = Bounds;
+            this.KeyPreview = true;
         }
 
 
@@ -119,10 +120,10 @@ namespace ScreenSaver
                     else
                     {
                         this.pictureBox1.Visible = true;
+                        this.pictureBox1.Load(this.imagePaths[0]);
+                        this.pictureBox1.BackColor = getAverageColor(new Bitmap(this.pictureBox1.Image));
                         this.imagePaths.Add(this.imagePaths[0]);
                         this.imagePaths.RemoveAt(0);
-                        this.pictureBox1.ImageLocation = this.imagePaths[0];
-                        this.pictureBox1.Update();
                     }
                 }
             }
@@ -130,17 +131,13 @@ namespace ScreenSaver
             Cursor.Hide();
             TopMost = true;
 
-            moveTimer.Interval = 3000;
+            moveTimer.Interval = 8000;
             moveTimer.Tick += new EventHandler(moveTimer_Tick);
             moveTimer.Start();
         }
 
         private void moveTimer_Tick(object sender, System.EventArgs e)
         {
-            // Move text to new location
-            //textLabel.Left = rand.Next(Math.Max(1, Bounds.Width - textLabel.Width));
-            //textLabel.Top = rand.Next(Math.Max(1, Bounds.Height - textLabel.Height));
-
             if (this.imagePaths.Count > 0)
             {
                 if (!System.IO.File.Exists(this.imagePaths[0]))
@@ -150,10 +147,11 @@ namespace ScreenSaver
                 else
                 {
                     this.pictureBox1.Visible = true;
+                    this.pictureBox1.Load(this.imagePaths[0]);
+                    this.pictureBox1.BackColor = getAverageColor(new Bitmap(this.pictureBox1.Image));
                     this.imagePaths.Add(this.imagePaths[0]);
                     this.imagePaths.RemoveAt(0);
-                    this.pictureBox1.ImageLocation = this.imagePaths[0];
-                    this.pictureBox1.Update();
+                    
                 }
             }
         }
@@ -191,6 +189,38 @@ namespace ScreenSaver
             {
                 Application.Exit();
             }
+        }
+
+        private static Color getAverageColor(Bitmap bmp)
+        {
+
+            //Used for tally
+            int r = 0;
+            int g = 0;
+            int b = 0;
+
+            int total = 0;
+
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color clr = bmp.GetPixel(x, y);
+
+                    r += clr.R;
+                    g += clr.G;
+                    b += clr.B;
+
+                    total++;
+                }
+            }
+
+            //Calculate average
+            r /= total;
+            g /= total;
+            b /= total;
+
+            return Color.FromArgb(r, g, b);
         }
     }
 }

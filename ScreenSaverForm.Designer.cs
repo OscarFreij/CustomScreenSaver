@@ -1,4 +1,4 @@
-﻿namespace ScreenSaver
+﻿namespace CustomScreenSaver
 {
     partial class ScreenSaverForm
     {
@@ -81,7 +81,7 @@
             this.Name = "ScreenSaverForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "ScreenSaver";
+            this.Text = "CustomScreenSaver";
             this.TopMost = true;
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.ScreenSaverForm_Load);

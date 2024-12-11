@@ -4,10 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ScreenSaver
+namespace CustomScreenSaver
 {
     internal static class Program
     {
+        public static int defaultTimeoutMs = 10000;
+        public static string defaultImageMode = "Zoom";
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -41,7 +44,7 @@ namespace ScreenSaver
                     if (secondArgument == null)
                     {
                         MessageBox.Show("Sorry, but the expected window handle was not provided.",
-                            "ScreenSaver", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            "CustomScreenSaver", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                         return;
                     }
 
@@ -56,7 +59,7 @@ namespace ScreenSaver
                 else    // Undefined argument
                 {
                     MessageBox.Show("Sorry, but the command line argument \"" + firstArgument +
-                        "\" is not valid.", "ScreenSaver",
+                        "\" is not valid.", "CustomScreenSaver",
                         MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
             }
@@ -70,8 +73,8 @@ namespace ScreenSaver
         {
             foreach (Screen screen in Screen.AllScreens)
             {
-                ScreenSaverForm screensaver = new ScreenSaverForm(screen.Bounds);
-                screensaver.Show();
+                ScreenSaverForm CustomScreenSaver = new ScreenSaverForm(screen.Bounds);
+                CustomScreenSaver.Show();
             }
         }
 
